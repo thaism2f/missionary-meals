@@ -3,11 +3,14 @@ const calendarEl = document.getElementById('calendar');
 const form = document.getElementById('form');
 const nameInput = document.getElementById('name');
 const selectedDateLabel = document.getElementById('selected-date-label');
+const submitBtn = document.getElementById('submit-btn');
+const removeBtn = document.getElementById('remove-btn');
 const monthTitle = document.getElementById('month-title');
 
 let currentMonth = 7;  // August = 7
 let currentYear = 2025;
 const signUps = {};
+let selectedDate = "";
 
 function renderCalendar(month, year) {
   calendarEl.innerHTML = '';
@@ -33,20 +36,8 @@ function renderCalendar(month, year) {
     nameDiv.id = `name-${key}`;
     nameDiv.textContent = signUps[key] || '';
 
-    const removeBtn = document.createElement('button');
-    removeBtn.textContent = '❌ Remove';
-    removeBtn.style.display = signUps[key] ? 'block' : 'none';
-    removeBtn.style.marginTop = '5px';
-    removeBtn.style.fontSize = '12px';
-    removeBtn.onclick = (e) => {
-      e.stopPropagation();
-      delete signUps[key];
-      renderCalendar(currentMonth, currentYear);
-    };
-
     day.innerHTML = `<div>${i}</div>`;
     day.appendChild(nameDiv);
-    day.appendChild(removeBtn);
 
     day.onclick = () => showForm(i, month, year);
     calendarEl.appendChild(day);
@@ -55,9 +46,12 @@ function renderCalendar(month, year) {
 
 function showForm(day, month, year) {
   const key = `${year}-${month + 1}-${day}`;
+  selectedDate = key;
   selectedDateLabel.textContent = `Sign up for ${key}`;
   form.style.display = 'block';
+  nameInput.value = signUps[key] || '';
   nameInput.dataset.date = key;
+  removeBtn.style.display = signUps[key] ? 'inline-block' : 'none';
   nameInput.focus();
 }
 
@@ -67,8 +61,17 @@ function submitForm() {
   if (!name) return alert("Please enter your name");
   signUps[key] = name;
   renderCalendar(currentMonth, currentYear);
-  nameInput.value = '';
   form.style.display = 'none';
+  nameInput.value = '';
+}
+
+function removeName() {
+  if (selectedDate) {
+    delete signUps[selectedDate];
+    renderCalendar(currentMonth, currentYear);
+    form.style.display = 'none';
+    nameInput.value = '';
+  }
 }
 
 function changeMonth(delta) {
