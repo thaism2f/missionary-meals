@@ -1,0 +1,59 @@
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
+  padding: 20px;
+  text-align: center;
+}
+h1 {
+  color: #333;
+}
+.buttons {
+  margin-top: 30px;
+}
+.button {
+  display: inline-block;
+  padding: 15px 25px;
+  margin: 10px;
+  font-size: 18px;
+  background: #0077cc;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+}
+.button.disabled {
+  background: #ccc;
+  pointer-events: none;
+}
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  max-width: 600px;
+  margin: 30px auto;
+}
+.day {
+  background: white;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  height: 80px;
+  cursor: pointer;
+}
+.day:hover {
+  background: #e0f7fa;
+}
+.signup-name {
+  font-size: 0.9em;
+  color: green;
+  margin-top: 5px;
+}
+#form {
+  margin-top: 20px;
+  display: none;
+}
+input, button {
+  padding: 10px;
+  margin: 5px;
+  font-size: 16px;
+}
