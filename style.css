@@ -25,12 +25,22 @@ h1 {
   background: #ccc;
   pointer-events: none;
 }
+.calendar-nav {
+  margin: 20px;
+}
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  max-width: 600px;
+  margin: 10px auto;
+  font-weight: bold;
+}
 .calendar {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 5px;
   max-width: 600px;
-  margin: 30px auto;
+  margin: 10px auto;
 }
 .day {
   background: white;
