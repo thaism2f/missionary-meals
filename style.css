@@ -102,3 +102,44 @@ input, button {
     padding: 8px 10px;
   }
 }
+/* Mobile-Friendly Missionary Meals Index Page Styles */
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 1rem;
+}
+
+h1 {
+  font-size: 1.8rem;
+}
+
+p {
+  font-size: 1.1rem;
+}
+
+button {
+  display: block;
+  width: 90%;
+  max-width: 300px;
+  margin: 0.5rem auto;
+  padding: 1rem;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: #ffcc80;
+}
+
+button:hover {
+  background-color: #ffb74d;
+}
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+  button {
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
+}
