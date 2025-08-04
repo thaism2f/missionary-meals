@@ -1,1 +1,1 @@
-// JS connected to SheetDB or Apps Script
+// Sisters Windermere JS (Google Sheets linked)

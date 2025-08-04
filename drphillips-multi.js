@@ -1,1 +1,1 @@
-// JS connected to SheetDB or Apps Script
+// Dr Phillips JS (Google Sheets linked)

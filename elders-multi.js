@@ -1,1 +1,1 @@
-// JS connected to SheetDB or Apps Script
+// Elders Metrowest JS (Google Sheets linked)
