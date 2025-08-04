@@ -4,10 +4,9 @@ const form = document.getElementById('form');
 const nameInput = document.getElementById('name');
 const selectedDateLabel = document.getElementById('selected-date-label');
 const submitBtn = document.getElementById('submit-btn');
-const removeBtn = document.getElementById('remove-btn');
 const monthTitle = document.getElementById('month-title');
 
-let currentMonth = 7;  // August = 7
+let currentMonth = 7;  // August
 let currentYear = 2025;
 const signUps = {};
 let selectedDate = "";
@@ -51,27 +50,20 @@ function showForm(day, month, year) {
   form.style.display = 'block';
   nameInput.value = signUps[key] || '';
   nameInput.dataset.date = key;
-  removeBtn.style.display = signUps[key] ? 'inline-block' : 'none';
   nameInput.focus();
 }
 
 function submitForm() {
   const name = nameInput.value.trim();
   const key = nameInput.dataset.date;
-  if (!name) return alert("Please enter your name");
-  signUps[key] = name;
+  if (name) {
+    signUps[key] = name;
+  } else {
+    delete signUps[key];
+  }
   renderCalendar(currentMonth, currentYear);
   form.style.display = 'none';
   nameInput.value = '';
-}
-
-function removeName() {
-  if (selectedDate) {
-    delete signUps[selectedDate];
-    renderCalendar(currentMonth, currentYear);
-    form.style.display = 'none';
-    nameInput.value = '';
-  }
 }
 
 function changeMonth(delta) {
