@@ -18,14 +18,20 @@ h1 {
 }
 
 button {
-  padding: 10px 16px;
-  font-size: 16px;
-  margin: 10px;
+  display: block;
+  width: 95%;
+  max-width: 350px;
+  margin: 0.75rem auto;
+  padding: 1.2rem;
+  font-size: 1.4rem;
+  border-radius: 10px;
   border: none;
-  border-radius: 8px;
+  background-color: #ffcc80;
   cursor: pointer;
-  background-color: #32cd32;
-  color: white;
+}
+
+button:hover {
+  background-color: #ffb74d;
 }
 
 .month-nav button {
@@ -62,4 +68,19 @@ button {
   margin-top: 4px;
   font-size: 16px;
   color: #333;
+}
+.signup-name {
+  font-size: 1.3rem; /* was smaller before */
+  font-weight: bold;
+  color: green;
+  margin-top: 6px;
+  text-align: center;
+  word-break: break-word; /* ensures long names wrap */
+}
+
+/* Keep cells square and adjust name size on small screens */
+@media (max-width: 600px) {
+  .signup-name {
+    font-size: 1.2rem;
+  }
 }
