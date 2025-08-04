@@ -34,12 +34,14 @@ function renderCalendar() {
     year: "numeric"
   });
 
+  // Empty cells before first day
   for (let i = 0; i < firstDay; i++) {
     const empty = document.createElement("div");
     empty.className = "day empty";
     calendar.appendChild(empty);
   }
 
+  // Calendar days
   for (let day = 1; day <= daysInMonth; day++) {
     const dateObj = new Date(year, month, day);
     const dateStr = formatDate(dateObj);
@@ -67,31 +69,36 @@ function renderCalendar() {
 
 function submitForm() {
   if (!selectedDate) return;
+
   const name = document.getElementById("name").value.trim();
 
-  // Always remove existing entries for this date/group first
+  // Remove old entry for this date/group
   fetch(`${scriptURL}/search?date=${selectedDate}&group=${encodeURIComponent(group)}`)
     .then(res => res.json())
     .then(rows => {
-      const deletions = rows.map(row =>
-        fetch(`${scriptURL}/search?date=${selectedDate}&group=${encodeURIComponent(group)}`, {
+      if (rows.length > 0) {
+        // Delete all matches before adding a new one
+        return fetch(`${scriptURL}/search?date=${selectedDate}&group=${encodeURIComponent(group)}`, {
           method: "DELETE"
-        })
-      );
-
-      return Promise.all(deletions);
-    })
-    .then(() => {
-      if (name !== "") {
-        return fetch(scriptURL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ data: [{ date: selectedDate, group: group, name: name }] })
         });
       }
     })
     .then(() => {
-      calendarData[selectedDate] = name || undefined;
+      if (name !== "") {
+        // Add new entry
+        return fetch(scriptURL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ data: [{ date: selectedDate, group: group, name: name }] }) // ✅ includes name
+        });
+      }
+    })
+    .then(() => {
+      if (name !== "") {
+        calendarData[selectedDate] = name;
+      } else {
+        delete calendarData[selectedDate];
+      }
       renderCalendar();
     });
 }
