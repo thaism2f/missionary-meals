@@ -1,4 +1,4 @@
-
+/* General page styling */
 body {
   font-family: 'Poppins', sans-serif;
   background: #fffdf6;
@@ -17,6 +17,7 @@ h1 {
   margin-bottom: 10px;
 }
 
+/* Big buttons for index page */
 button {
   display: block;
   width: 95%;
@@ -34,23 +35,26 @@ button:hover {
   background-color: #ffb74d;
 }
 
+/* Month navigation buttons */
 .month-nav button {
   font-size: 16px;
   padding: 6px 12px;
   margin: 4px;
 }
 
+/* Calendar table layout */
 #calendar table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
 }
 
-#calendar th, #calendar td {
+#calendar th, 
+#calendar td {
   border: 1px solid #ddd;
-  padding: 10px;
+  padding: 8px;
   width: 14.28%;
-  height: 80px;
+  height: 90px; /* Slightly taller for more room */
   vertical-align: top;
   position: relative;
 }
@@ -64,23 +68,37 @@ button:hover {
   font-weight: bold;
 }
 
+/* Name styling inside calendar */
 .name {
   margin-top: 4px;
   font-size: 16px;
   color: #333;
 }
+
+/* Signup names — bigger & bolder */
 .signup-name {
-  font-size: 1.3rem; /* was smaller before */
+  font-size: 1.6rem;  /* Larger than before */
   font-weight: bold;
   color: green;
-  margin-top: 6px;
+  margin-top: 4px;
   text-align: center;
-  word-break: break-word; /* ensures long names wrap */
+  line-height: 1.1;   /* Tight line height for multiple words */
+  word-break: break-word; /* Wrap long names */
 }
 
-/* Keep cells square and adjust name size on small screens */
+/* Mobile adjustments */
 @media (max-width: 600px) {
-  .signup-name {
+  h1 {
+    font-size: 24px;
+  }
+  button {
     font-size: 1.2rem;
+    padding: 1rem;
+  }
+  #calendar td {
+    height: 80px;
+  }
+  .signup-name {
+    font-size: 1.4rem; /* Still big on mobile but fits */
   }
 }
