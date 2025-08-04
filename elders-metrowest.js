@@ -1,6 +1,6 @@
 
 const scriptURL = 'https://sheetdb.io/api/v1/wr8bptn1wll6e';
-const group = "Elders Dr Phillips";
+const group = "Elders Metrowest";
 
 let currentDate = new Date();
 let selectedDate = null;
