@@ -23,11 +23,31 @@ function renderCalendar(month, year) {
   }
 
   for (let i = 1; i <= daysInMonth; i++) {
+    const key = `${year}-${month + 1}-${i}`;
     const day = document.createElement('div');
     day.className = 'day';
-    const key = `${year}-${month + 1}-${i}`;
     day.dataset.date = key;
-    day.innerHTML = `<div>${i}</div><div class="signup-name" id="name-${key}">${signUps[key] || ''}</div>`;
+
+    const nameDiv = document.createElement('div');
+    nameDiv.className = 'signup-name';
+    nameDiv.id = `name-${key}`;
+    nameDiv.textContent = signUps[key] || '';
+
+    const removeBtn = document.createElement('button');
+    removeBtn.textContent = '❌ Remove';
+    removeBtn.style.display = signUps[key] ? 'block' : 'none';
+    removeBtn.style.marginTop = '5px';
+    removeBtn.style.fontSize = '12px';
+    removeBtn.onclick = (e) => {
+      e.stopPropagation();
+      delete signUps[key];
+      renderCalendar(currentMonth, currentYear);
+    };
+
+    day.innerHTML = `<div>${i}</div>`;
+    day.appendChild(nameDiv);
+    day.appendChild(removeBtn);
+
     day.onclick = () => showForm(i, month, year);
     calendarEl.appendChild(day);
   }
@@ -46,7 +66,7 @@ function submitForm() {
   const key = nameInput.dataset.date;
   if (!name) return alert("Please enter your name");
   signUps[key] = name;
-  document.getElementById(`name-${key}`).textContent = name;
+  renderCalendar(currentMonth, currentYear);
   nameInput.value = '';
   form.style.display = 'none';
 }
