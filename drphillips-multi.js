@@ -73,10 +73,11 @@ function submitForm() {
   fetch(`${scriptURL}/search?date=${selectedDate}&group=${encodeURIComponent(group)}`)
     .then(res => res.json())
     .then(rows => {
-      if (rows.length > 0) {
-return fetch(`${scriptURL}/date/${selectedDate}/group/${encodeURIComponent(group)}`, {
-  method: "DELETE"
-});
+if (name === "") {
+  return fetch(`${scriptURL}/date/${selectedDate}/group/${encodeURIComponent(group)}`, {
+    method: "DELETE"
+  });
+}
       }
     })
     .then(() => {
