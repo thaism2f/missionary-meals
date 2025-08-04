@@ -1,5 +1,4 @@
-
-const scriptURL = 'https://sheetdb.io/api/v1/wr8bptn1wll6e';
+const SHEETDB_URL = 'https://sheetdb.io/api/v1/wr8bptn1wll6e';
 const group = "Elders Dr Phillips";
 
 let currentDate = new Date();
@@ -16,7 +15,7 @@ function goHome() {
 
 function changeMonth(delta) {
   currentDate.setMonth(currentDate.getMonth() + delta);
-  renderCalendar();
+  loadData();
 }
 
 function renderCalendar() {
@@ -27,10 +26,13 @@ function renderCalendar() {
 
   const month = currentDate.getMonth();
   const year = currentDate.getFullYear();
-  document.getElementById("month-title").innerText = currentDate.toLocaleString("default", { month: "long", year: "numeric" });
-
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  document.getElementById("month-title").innerText = currentDate.toLocaleString("default", {
+    month: "long",
+    year: "numeric"
+  });
 
   for (let i = 0; i < firstDay; i++) {
     const empty = document.createElement("div");
@@ -39,7 +41,8 @@ function renderCalendar() {
   }
 
   for (let day = 1; day <= daysInMonth; day++) {
-    const dateStr = formatDate(new Date(year, month, day));
+    const dateObj = new Date(year, month, day);
+    const dateStr = formatDate(dateObj);
     const cell = document.createElement("div");
     cell.className = "day";
     cell.innerText = day;
@@ -63,36 +66,56 @@ function renderCalendar() {
 function submitForm() {
   if (!selectedDate) return;
 
-  const name = document.getElementById("name").value;
+  const name = document.getElementById("name").value.trim();
 
-  const entry = {
+  const payload = {
     date: selectedDate,
     group: group,
     name: name
   };
 
-  fetch(scriptURL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ data: [entry] })
-  })
+  // First, check if this date/group already exists
+  fetch(`${SHEETDB_URL}/search?date=${selectedDate}&group=${group}`)
     .then(res => res.json())
-    .then(() => {
-      calendarData[selectedDate] = name;
+    .then(data => {
+      if (data.length > 0) {
+        const rowId = data[0].id;
+        if (name === "") {
+          // Delete if blank
+          fetch(`${SHEETDB_URL}/id/${rowId}`, { method: "DELETE" })
+        } else {
+          // Update existing
+          fetch(`${SHEETDB_URL}/id/${rowId}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ data: payload })
+          });
+        }
+      } else {
+        if (name !== "") {
+          // Create new entry
+          fetch(SHEETDB_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ data: payload })
+          });
+        }
+      }
+
+      calendarData[selectedDate] = name || undefined;
       renderCalendar();
     });
 }
 
 function loadData() {
-  const month = currentDate.toISOString().substring(0, 7);
-
-  fetch(`${scriptURL}/search?group=${group}`)
-    .then(response => response.json())
+  const monthPrefix = currentDate.toISOString().slice(0, 7); // YYYY-MM
+  fetch(`${SHEETDB_URL}/search?group=${group}`)
+    .then(res => res.json())
     .then(data => {
       calendarData = {};
-      data.forEach(entry => {
-        if (entry.date.startsWith(month)) {
-          calendarData[entry.date] = entry.name;
+      data.forEach(row => {
+        if (row.date && row.date.startsWith(monthPrefix)) {
+          calendarData[row.date] = row.name;
         }
       });
       renderCalendar();
