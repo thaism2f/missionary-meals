@@ -74,10 +74,16 @@ function submitForm() {
     .then(res => res.json())
     .then(rows => {
 if (name === "") {
-  console.log("DELETE URL:", `${scriptURL}/date/${selectedDate}/group/${encodeURIComponent(group)}`);
-return fetch(`${scriptURL}/date/${selectedDate}/group/${encodeURIComponent(group)}`, {
+  fetch(`${scriptURL}/date/${selectedDate}/group/${encodeURIComponent(group)}`, {
     method: "DELETE"
+  })
+  .then(res => res.json())
+  .then(result => {
+    console.log("Delete result:", result);
+    delete calendarData[selectedDate];
+    renderCalendar();
   });
+}
 }
       }
     })
