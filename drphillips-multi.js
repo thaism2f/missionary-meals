@@ -65,20 +65,21 @@ function submitForm() {
 
   const name = document.getElementById("name").value;
 
-  fetch(scriptURL, {
+  fetch('https://sheetdb.io/api/v1/wr8bptn1wll6e', {
     method: 'POST',
-    body: JSON.stringify({ date: selectedDate, name: name, group: group })
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      data: [
+        { date: selectedDate, group: group, name: name }
+      ]
+    })
   })
   .then(response => response.json())
   .then(data => {
-    if (data.status === "success") {
-      if (name.trim() === "") {
-        delete calendarData[selectedDate];
-      } else {
-        calendarData[selectedDate] = name;
-      }
-      renderCalendar();
-    }
+    calendarData[selectedDate] = name;
+    renderCalendar();
   });
 }
 
