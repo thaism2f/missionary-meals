@@ -74,7 +74,8 @@ function submitForm() {
     .then(res => res.json())
     .then(rows => {
 if (name === "") {
-  return fetch(`${scriptURL}/date/${selectedDate}/group/${encodeURIComponent(group)}`, {
+  console.log("DELETE URL:", `${scriptURL}/date/${selectedDate}/group/${encodeURIComponent(group)}`);
+return fetch(`${scriptURL}/date/${selectedDate}/group/${encodeURIComponent(group)}`, {
     method: "DELETE"
   });
 }
