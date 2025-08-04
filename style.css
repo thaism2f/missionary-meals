@@ -143,3 +143,80 @@ button:hover {
     padding: 0.8rem;
   }
 }
+/* Base styles (mobile-first) */
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 0.5rem;
+}
+
+h1 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.calendar-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.calendar-nav button {
+  flex: 1 1 30%;
+  min-width: 100px;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.day {
+  border: 1px solid #ccc;
+  min-height: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.signup-name {
+  font-size: 0.8rem;
+  color: green;
+}
+
+.empty {
+  background-color: #f9f9f9;
+}
+
+/* Larger tap targets on very small screens */
+@media (max-width: 600px) {
+  h1 {
+    font-size: 1.2rem;
+  }
+  .calendar {
+    gap: 4px;
+  }
+  .day {
+    min-height: 60px;
+    font-size: 1rem;
+  }
+  .signup-name {
+    font-size: 0.9rem;
+  }
+}
