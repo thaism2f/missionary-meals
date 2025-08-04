@@ -53,10 +53,11 @@ function renderCalendar() {
       cell.appendChild(nameDiv);
     }
 
-    cell.onclick = () => {
-      selectedDate = dateStr;
-      document.getElementById("selected-date-label").innerText = "Selected: " + selectedDate;
-      document.getElementById("name").value = calendarData[dateStr] || "";
+cell.onclick = () => {
+  selectedDate = dateStr;
+  document.getElementById("selected-date-label").innerText = "Selected: " + selectedDate;
+  document.getElementById("name").value = calendarData[dateStr] || "";
+  document.getElementById("form").style.display = "block";
     };
 
     calendar.appendChild(cell);
