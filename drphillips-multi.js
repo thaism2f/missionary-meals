@@ -1,76 +1,86 @@
 
-const calendarEl = document.getElementById('calendar');
-const form = document.getElementById('form');
-const nameInput = document.getElementById('name');
-const selectedDateLabel = document.getElementById('selected-date-label');
-const submitBtn = document.getElementById('submit-btn');
-const monthTitle = document.getElementById('month-title');
+const scriptURL = 'https://sheetdb.io/api/v1/wr8bptn1wll6e';
+const group = "Elders Dr Phillips";
 
-let currentMonth = 7;  // August
-let currentYear = 2025;
-const signUps = {};
-let selectedDate = "";
+let currentDate = new Date();
+let selectedDate = null;
+let calendarData = {};
 
-function renderCalendar(month, year) {
-  calendarEl.innerHTML = '';
-  const firstDay = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const monthNames = ["January", "February", "March", "April", "May", "June",
-                      "July", "August", "September", "October", "November", "December"];
-  monthTitle.textContent = `${monthNames[month]} ${year}`;
-
-  for (let i = 0; i < firstDay; i++) {
-    const empty = document.createElement('div');
-    calendarEl.appendChild(empty);
-  }
-
-  for (let i = 1; i <= daysInMonth; i++) {
-    const key = `${year}-${month + 1}-${i}`;
-    const day = document.createElement('div');
-    day.className = 'day';
-    day.dataset.date = key;
-
-    const nameDiv = document.createElement('div');
-    nameDiv.className = 'signup-name';
-    nameDiv.id = `name-${key}`;
-    nameDiv.textContent = signUps[key] || '';
-
-    day.innerHTML = `<div>${i}</div>`;
-    day.appendChild(nameDiv);
-
-    day.onclick = () => showForm(i, month, year);
-    calendarEl.appendChild(day);
-  }
+function formatDate(date) {
+  return date.toISOString().split('T')[0];
 }
 
-function showForm(day, month, year) {
-  const key = `${year}-${month + 1}-${day}`;
-  selectedDate = key;
-  selectedDateLabel.textContent = `Sign up for ${key}`;
-  form.style.display = 'block';
-  nameInput.value = signUps[key] || '';
-  nameInput.dataset.date = key;
-  nameInput.focus();
+function goHome() {
+  window.location.href = "index.html";
+}
+
+function changeMonth(delta) {
+  currentDate.setMonth(currentDate.getMonth() + delta);
+  loadData();
+}
+
+function renderCalendar() {
+  const calendar = document.getElementById("calendar");
+  calendar.innerHTML = "";
+  document.getElementById("name").value = "";
+  document.getElementById("selected-date-label").innerText = "";
+
+  const month = currentDate.getMonth();
+  const year = currentDate.getFullYear();
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  document.getElementById("month-title").innerText = currentDate.toLocaleString("default", {
+    month: "long",
+    year: "numeric"
+  });
+
+  for (let i = 0; i < firstDay; i++) {
+    const empty = document.createElement("div");
+    empty.className = "day empty";
+    calendar.appendChild(empty);
+  }
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dateObj = new Date(year, month, day);
+    const dateStr = formatDate(dateObj);
+    const cell = document.createElement("div");
+    cell.className = "day";
+    cell.innerText = day;
+
+    if (calendarData[dateStr]) {
+      const nameDiv = document.createElement("div");
+      nameDiv.className = "signup-name";
+      nameDiv.innerText = "🍽 " + calendarData[dateStr];
+      cell.appendChild(nameDiv);
+    }
+
+    cell.onclick = () => {
+      selectedDate = dateStr;
+      document.getElementById("selected-date-label").innerText = "Selected: " + selectedDate;
+      document.getElementById("name").value = calendarData[dateStr] || "";
+      document.getElementById("form").style.display = "block";
+    };
+
+    calendar.appendChild(cell);
+  }
 }
 
 function submitForm() {
   if (!selectedDate) return;
   const name = document.getElementById("name").value.trim();
 
-  // 1. Search by date and group
   fetch(`${scriptURL}/search?date=${selectedDate}&group=${encodeURIComponent(group)}`)
     .then(res => res.json())
     .then(rows => {
       if (rows.length > 0) {
         const rowId = rows[0].id;
 
-        // 2. If name is empty, delete by row ID
         if (name === "") {
           return fetch(`${scriptURL}/id/${rowId}`, {
             method: "DELETE"
           });
         } else {
-          // 3. If updating, delete first (to avoid duplicates)
           return fetch(`${scriptURL}/id/${rowId}`, {
             method: "DELETE"
           }).then(() => Promise.resolve());
@@ -79,7 +89,6 @@ function submitForm() {
     })
     .then(() => {
       if (name !== "") {
-        // 4. Then add new record
         return fetch(scriptURL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -96,3 +105,20 @@ function submitForm() {
       renderCalendar();
     });
 }
+
+function loadData() {
+  fetch(`${scriptURL}/search?group=${encodeURIComponent(group)}`)
+    .then(res => res.json())
+    .then(data => {
+      calendarData = {};
+      const monthPrefix = currentDate.toISOString().slice(0, 7);
+      data.forEach(entry => {
+        if (entry.date && entry.date.startsWith(monthPrefix)) {
+          calendarData[entry.date] = entry.name;
+        }
+      });
+      renderCalendar();
+    });
+}
+
+window.onload = loadData;
