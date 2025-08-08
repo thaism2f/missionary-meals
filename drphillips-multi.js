@@ -54,32 +54,45 @@ function showForm(day, month, year) {
 }
 
 function submitForm() {
-  const name = nameInput.value.trim();
-  const key = nameInput.dataset.date;
-  if (name) {
-    signUps[key] = name;
-  } else {
-    delete signUps[key];
-  }
-  renderCalendar(currentMonth, currentYear);
-  form.style.display = 'none';
-  nameInput.value = '';
-}
+  if (!selectedDate) return;
+  const name = document.getElementById("name").value.trim();
 
-function changeMonth(delta) {
-  currentMonth += delta;
-  if (currentMonth < 0) {
-    currentMonth = 11;
-    currentYear--;
-  } else if (currentMonth > 11) {
-    currentMonth = 0;
-    currentYear++;
-  }
-  renderCalendar(currentMonth, currentYear);
-}
+  // 1. Search by date and group
+  fetch(`${scriptURL}/search?date=${selectedDate}&group=${encodeURIComponent(group)}`)
+    .then(res => res.json())
+    .then(rows => {
+      if (rows.length > 0) {
+        const rowId = rows[0].id;
 
-function goHome() {
-  window.location.href = "index.html";
+        // 2. If name is empty, delete by row ID
+        if (name === "") {
+          return fetch(`${scriptURL}/id/${rowId}`, {
+            method: "DELETE"
+          });
+        } else {
+          // 3. If updating, delete first (to avoid duplicates)
+          return fetch(`${scriptURL}/id/${rowId}`, {
+            method: "DELETE"
+          }).then(() => Promise.resolve());
+        }
+      }
+    })
+    .then(() => {
+      if (name !== "") {
+        // 4. Then add new record
+        return fetch(scriptURL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ data: [{ date: selectedDate, group: group, name: name }] })
+        });
+      }
+    })
+    .then(() => {
+      if (name !== "") {
+        calendarData[selectedDate] = name;
+      } else {
+        delete calendarData[selectedDate];
+      }
+      renderCalendar();
+    });
 }
-
-renderCalendar(currentMonth, currentYear);
