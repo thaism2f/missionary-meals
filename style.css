@@ -1,93 +1,104 @@
 
-/* General mobile-friendly styles */
 body {
   font-family: Arial, sans-serif;
+  background: #f9f9f9;
+  padding: 10px;
   text-align: center;
-  padding: 0.5rem;
+  margin: 0;
 }
-
 h1 {
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
+  color: #333;
+  font-size: 1.5em;
+  margin: 20px 10px;
 }
-
-.calendar-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  justify-content: center;
-  margin-bottom: 1rem;
-}
-
-.calendar-nav button {
-  flex: 1 1 auto;
-  min-width: 120px;
-  padding: 0.8rem;
-  font-size: 1.1rem;
-  border-radius: 8px;
-  border: none;
-  background-color: #f0f0f0;
-  cursor: pointer;
-}
-
-.calendar-nav button:hover {
-  background-color: #e0e0e0;
-}
-
-.weekdays {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  font-weight: bold;
-  font-size: 1.1rem;
-  margin-bottom: 0.5rem;
-}
-
-.calendar {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
-}
-
-.day {
-  border: 1px solid #ccc;
-  aspect-ratio: 1 / 1; /* Makes cells perfectly square */
+.buttons {
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
+  gap: 10px;
   align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
+}
+.button {
+  padding: 15px 25px;
+  font-size: 18px;
+  background: #0077cc;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 320px;
+}
+.button.disabled {
+  background: #ccc;
+  pointer-events: none;
+}
+.calendar-nav {
+  margin: 15px;
+}
+.calendar-nav button {
+  font-size: 16px;
+  margin: 0 5px;
+  padding: 10px 15px;
+}
+.weekdays, .calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 14px;
+}
+.weekdays {
+  font-weight: bold;
+  background: #f0f0f0;
+}
+.calendar {
+  gap: 5px;
+}
+.day {
+  background: white;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  height: 70px;
+  font-size: 14px;
   cursor: pointer;
-  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
-
 .day:hover {
-  background-color: #f9f9f9;
+  background: #e0f7fa;
 }
-
 .signup-name {
-  font-size: 1rem;
+  font-size: 0.85em;
   color: green;
-  margin-top: 4px;
+}
+#form {
+  margin-top: 20px;
+  display: none;
+}
+input, button {
+  padding: 10px;
+  margin: 5px;
+  font-size: 16px;
+  width: 90%;
+  max-width: 300px;
 }
 
-.empty {
-  background-color: #f9f9f9;
-}
-
-/* Extra adjustments for small screens */
 @media (max-width: 600px) {
-  h1 {
-    font-size: 1.6rem;
-  }
-  .calendar-nav button {
-    font-size: 1rem;
-    padding: 1rem;
-    max-width: 200px;
+  .weekdays, .calendar {
+    font-size: 12px;
+    grid-template-columns: repeat(7, 1fr);
   }
   .day {
-    font-size: 1.2rem;
+    height: 60px;
+    padding: 6px;
   }
-  .signup-name {
-    font-size: 1rem;
+  h1 {
+    font-size: 1.3em;
+  }
+  .calendar-nav button {
+    font-size: 14px;
+    padding: 8px 10px;
   }
 }
