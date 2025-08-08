@@ -54,38 +54,16 @@ function showForm(day, month, year) {
 }
 
 function submitForm() {
-  if (!selectedDate) return;
-  const name = document.getElementById("name").value.trim();
-
-  if (name === "") {
-    // Clear the name in SheetDB
-    fetch(`${scriptURL}/date/${selectedDate}/group/${encodeURIComponent(group)}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data: [{ name: "" }] })
-    })
-    .then(res => res.json())
-    .then(result => {
-      console.log("Cleared name result:", result);
-      delete calendarData[selectedDate];
-      loadData(); // refresh the calendar from DB
-    })
-    .catch(err => console.error("Error clearing name:", err));
+  const name = nameInput.value.trim();
+  const key = nameInput.dataset.date;
+  if (name) {
+    signUps[key] = name;
   } else {
-    // Add/update the name in SheetDB
-    fetch(scriptURL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data: [{ date: selectedDate, group: group, name: name }] })
-    })
-    .then(res => res.json())
-    .then(result => {
-      console.log("Added name result:", result);
-      calendarData[selectedDate] = name;
-      loadData(); // refresh the calendar from DB
-    })
-    .catch(err => console.error("Error adding name:", err));
+    delete signUps[key];
   }
+  renderCalendar(currentMonth, currentYear);
+  form.style.display = 'none';
+  nameInput.value = '';
 }
 
 function changeMonth(delta) {
