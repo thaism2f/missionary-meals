@@ -1,104 +1,138 @@
 
+/* General page styling */
 body {
-  font-family: Arial, sans-serif;
-  background: #f9f9f9;
-  padding: 10px;
-  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  background: #fffdf6;
   margin: 0;
-}
-h1 {
-  color: #333;
-  font-size: 1.5em;
-  margin: 20px 10px;
-}
-.buttons {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
-}
-.button {
-  padding: 15px 25px;
-  font-size: 18px;
-  background: #0077cc;
-  color: white;
-  text-decoration: none;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 320px;
-}
-.button.disabled {
-  background: #ccc;
-  pointer-events: none;
-}
-.calendar-nav {
-  margin: 15px;
-}
-.calendar-nav button {
-  font-size: 16px;
-  margin: 0 5px;
-  padding: 10px 15px;
-}
-.weekdays, .calendar {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  max-width: 600px;
-  margin: 0 auto;
-  font-size: 14px;
-}
-.weekdays {
-  font-weight: bold;
-  background: #f0f0f0;
-}
-.calendar {
-  gap: 5px;
-}
-.day {
-  background: white;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  height: 70px;
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-.day:hover {
-  background: #e0f7fa;
-}
-.signup-name {
-  font-size: 0.85em;
-  color: green;
-}
-#form {
-  margin-top: 20px;
-  display: none;
-}
-input, button {
-  padding: 10px;
-  margin: 5px;
-  font-size: 16px;
-  width: 90%;
-  max-width: 300px;
+  padding: 20px;
+  text-align: center;
 }
 
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 28px;
+  margin: 10px 0 12px;
+}
+
+/* Home page big buttons */
+.index-page .buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.index-page .button {
+  display: block;
+  width: 95%;
+  max-width: 360px;
+  padding: 1.1rem 1.25rem;
+  font-size: 1.3rem;
+  border-radius: 12px;
+  background: #ffcc80;
+  color: #222;
+  text-decoration: none;
+  border: none;
+}
+
+.index-page .button:hover { background: #ffb74d; }
+
+/* Calendar navigation */
+.calendar-nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px 0 14px;
+}
+
+.calendar-nav button {
+  padding: 8px 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  background: #ececec;
+}
+
+.calendar-nav button:hover { background: #e2e2e2; }
+
+/* Weekday labels */
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  max-width: 700px;
+  margin: 0 auto 4px;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+/* Calendar grid */
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.day {
+  border: 1px solid #ddd;
+  aspect-ratio: 1/1;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 6px;
+  background: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.day:hover { background: #f6fbff; }
+
+/* The name text shown inside a day */
+.signup-name {
+  margin-top: 6px;
+  font-size: 1.35rem;  /* big but fits */
+  font-weight: 700;
+  color: #1a7f37;      /* readable green */
+  line-height: 1.1;
+  word-break: break-word;
+  text-align: center;
+}
+
+.empty { background: #fafafa; }
+
+/* Form under the calendar */
+#form { display: none; margin-top: 14px; }
+#form input {
+  width: 92%;
+  max-width: 320px;
+  padding: 12px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+#form button {
+  margin-top: 8px;
+  padding: 12px 14px;
+  font-size: 1.05rem;
+  border-radius: 8px;
+  border: none;
+  background: #4caf50;
+  color: white;
+}
+
+/* Mobile tweaks */
 @media (max-width: 600px) {
-  .weekdays, .calendar {
-    font-size: 12px;
-    grid-template-columns: repeat(7, 1fr);
-  }
-  .day {
-    height: 60px;
-    padding: 6px;
-  }
-  h1 {
-    font-size: 1.3em;
-  }
-  .calendar-nav button {
-    font-size: 14px;
-    padding: 8px 10px;
-  }
+  h1 { font-size: 24px; }
+  .signup-name { font-size: 1.2rem; }
+  .calendar, .weekdays { gap: 3px; }
 }
